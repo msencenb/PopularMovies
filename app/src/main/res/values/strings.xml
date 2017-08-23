@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="api_error_message">Failed loading movies, please try again later.</string>
+    <string name="sort_menu">Sort</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+</resources>
