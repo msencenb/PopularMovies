@@ -1,5 +1,6 @@
 package com.mattsencenbaugh.popularmovies;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import java.util.Date;
  * Created by msencenb on 8/17/17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     private String title;
     private String posterUrl;
     private Double voteAverage;

@@ -1,5 +1,7 @@
 package com.mattsencenbaugh.popularmovies;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,12 +65,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         showMovieGrid();
         mMovieAdapter.setMovies(movies);
     }
+    //endregion
 
+    //region MovieAdapter
     @Override
     public void onMovieClicked(Movie movie) {
-        // TODO move to the detail movie screen
-        Toast mToast = Toast.makeText(this, "movie clicked", Toast.LENGTH_SHORT);
-        mToast.show();
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra("Movie", movie);
+        startActivity(intentToStartDetailActivity);
     }
     //endregion
 

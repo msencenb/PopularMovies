@@ -113,7 +113,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
-            date = sourceFormat.parse("2016-05-30T15:47:20.833");
+            date = sourceFormat.parse(jsonDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
