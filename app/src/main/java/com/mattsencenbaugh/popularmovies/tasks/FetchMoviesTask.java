@@ -1,12 +1,7 @@
 package com.mattsencenbaugh.popularmovies.tasks;
 
-import android.net.Network;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
 
-import java.net.MalformedURLException;
+import android.os.AsyncTask;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +17,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by msencenb on 8/21/17.
@@ -30,7 +26,7 @@ import java.util.Date;
 public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private final AsyncTaskDelegate mTaskDelegate;
-    private int sort;
+    private final int sort;
 
     public FetchMoviesTask(AsyncTaskDelegate delegate, int sort) {
         this.mTaskDelegate = delegate;
@@ -102,7 +98,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         }
 
         return movies;
-    };
+    }
 
     private String getFullPosterPathFromJsonString(String posterPath) {
         final String POSTER_BASE_PATH = "http://image.tmdb.org/t/p/w185";
@@ -110,7 +106,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     }
 
     private Date getDateFromJsonString(String jsonDate) {
-        SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Date date = null;
         try {
             date = sourceFormat.parse(jsonDate);

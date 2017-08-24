@@ -5,4 +5,5 @@
     <string name="top_rated">Top Rated</string>
     <string name="popular">Popular</string>
     <string name="average_rating">%1$s Average Rating</string>
+    <string name="poster_accessibility">Movie Poster Image</string>
 </resources>

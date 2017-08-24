@@ -2,7 +2,6 @@ package com.mattsencenbaugh.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +54,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         Context context = parent.getContext();
         int layoutIdForPosterItem = R.layout.movie_grid_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForPosterItem, parent, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForPosterItem, parent, false);
         return new MovieAdapterViewHolder(view);
     }
 

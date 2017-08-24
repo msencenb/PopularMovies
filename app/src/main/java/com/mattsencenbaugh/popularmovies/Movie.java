@@ -1,7 +1,6 @@
 package com.mattsencenbaugh.popularmovies;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -9,11 +8,11 @@ import java.util.Date;
  */
 
 public class Movie implements Serializable {
-    private String title;
-    private String posterUrl;
-    private Double voteAverage;
-    private Date releaseDate;
-    private String plot;
+    private final String title;
+    private final String posterUrl;
+    private final Double voteAverage;
+    private final Date releaseDate;
+    private final String plot;
 
     public Movie(String title, String posterUrl, Double voteAverage, Date releaseDate, String plot) {
         this.title = title;

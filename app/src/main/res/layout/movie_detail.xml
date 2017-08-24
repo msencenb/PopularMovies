@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ScrollView
+    android:layout_height="wrap_content">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <android.support.percent.PercentRelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             >
-            <android.support.percent.PercentRelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                >
 
-                <ImageView
-                    android:id="@+id/detail_movie_poster"
-                    app:layout_widthPercent="30%"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"/>
-
-                <LinearLayout
-                    app:layout_widthPercent="65%"
-                    app:layout_marginStartPercent="35%"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_movie_title"
-                        android:textSize="27sp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_movie_release_date"
-                        android:textSize="20sp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_movie_vote_average"
-                        android:textSize="20sp"
-                        />
-                </LinearLayout>
-            </android.support.percent.PercentRelativeLayout >
-            <TextView
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/detail_movie_poster"
+                app:layout_widthPercent="30%"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:id="@+id/tv_movie_plot"
-                android:textSize="20sp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/poster_accessibility"
                 />
-        </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+
+            <LinearLayout
+                app:layout_widthPercent="65%"
+                app:layout_marginStartPercent="35%"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_movie_title"
+                    android:textSize="27sp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_movie_release_date"
+                    android:textSize="20sp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_movie_vote_average"
+                    android:textSize="20sp"
+                    />
+            </LinearLayout>
+        </android.support.percent.PercentRelativeLayout >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/tv_movie_plot"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
+</ScrollView>
