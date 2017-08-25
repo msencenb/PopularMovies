@@ -23,6 +23,7 @@ import java.util.Locale;
  * Created by msencenb on 8/21/17.
  */
 
+//TODO conside Retrofit or Volley https://vickychijwani.me/retrofit-vs-volley/
 public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private final AsyncTaskDelegate mTaskDelegate;

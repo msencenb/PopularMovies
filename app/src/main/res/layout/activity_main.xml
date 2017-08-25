@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/api_error_message"
         android:padding="16dp"
-        android:textSize="20sp"
+        android:textSize="@dimen/body_text_size"
         android:visibility="invisible"
         />
 

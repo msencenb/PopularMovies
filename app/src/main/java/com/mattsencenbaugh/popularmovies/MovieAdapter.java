@@ -39,6 +39,12 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
         public void updateForMovie(Movie movie) {
             Picasso.with(mImageView.getContext()).load(movie.getPosterUrl()).into(mImageView);
+            //TODO consider adding placeholder and error in with picasso
+            /*Picasso.with(mImageView.getContext())
+                    .load(movie.getPosterUrl())
+                    .placeholder(R.drawable.user_placeholder)
+                    .error(R.drawable.user_placeholder_error)
+                    .into(mImageView);*/
         }
 
         @Override

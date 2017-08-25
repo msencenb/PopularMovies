@@ -2,6 +2,7 @@ package com.mattsencenbaugh.popularmovies.utilities;
 
 import android.net.Uri;
 import android.util.Log;
+import com.mattsencenbaugh.popularmovies.BuildConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +48,7 @@ public final class NetworkUtilities {
     private static final String MOVIES_TOP_RATED = "top_rated";
 
     private static final String API_KEY_PARAM = "api_key";
-    private static final String API_KEY = "";
+    private static final String API_KEY = BuildConfig.API_KEY;
 
     public static URL buildPopularUrl() {
         Uri builtUri = buildUrlWithSort(MOVIES_POPULAR);

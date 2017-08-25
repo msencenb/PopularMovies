@@ -33,31 +33,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_movie_title"
-                    android:textSize="27sp"
+                    android:textSize="@dimen/headline_text_size"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_movie_release_date"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/body_text_size"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_movie_vote_average"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/body_text_size"
                     />
             </LinearLayout>
         </android.support.percent.PercentRelativeLayout >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginLeft="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginBottom="@dimen/standard_margin"
             android:id="@+id/tv_movie_plot"
-            android:textSize="20sp"
+            android:textSize="@dimen/body_text_size"
             />
     </LinearLayout>
 </ScrollView>

@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by msencenb on 8/17/17.
  */
 
+// TODO consider parcable instead of serializable
 public class Movie implements Serializable {
     private final String title;
     private final String posterUrl;

@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -17,11 +21,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'API_KEY', keystoreProperties['API_KEY']
+    }
 }
 
 repositories {
     mavenCentral()
 }
+
+// More third party libraries https://github.com/codepath/android_guides/wiki/Must-Have-Libraries and
+// https://github.com/wasabeef/awesome-android-libraries
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
