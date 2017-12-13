@@ -12,4 +12,5 @@ public interface AsyncTaskDelegate {
     // https://www.javacodegeeks.com/2013/12/advanced-java-generics-retreiving-generic-type-arguments.html
     // type is probably Object/T
     void onPostExecute(ArrayList<Movie> movies);
+    void onFailure(Boolean cancelled, String message);
 }

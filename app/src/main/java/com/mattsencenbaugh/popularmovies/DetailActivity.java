@@ -23,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
 
-        //TODO consider butterknife https://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife  
+        //TODO consider butterknife https://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife
         TextView mTitle = (TextView) findViewById(R.id.tv_movie_title);
         TextView mReleaseDate = (TextView) findViewById(R.id.tv_movie_release_date);
         TextView mVoteAverage = (TextView) findViewById(R.id.tv_movie_vote_average);
@@ -44,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
             String releaseDate = dateFormat.format(date);
             mReleaseDate.setText(releaseDate);
 
-            Picasso.with(mPoster.getContext()).load(movie.getPosterUrl()).into(mPoster);
+            Picasso.with(mPoster.getContext()).load(movie.getPosterPath()).into(mPoster);
         }
     }
 }

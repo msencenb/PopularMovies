@@ -15,8 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
-import com.mattsencenbaugh.popularmovies.tasks.FetchMoviesTask;
+import com.mattsencenbaugh.popularmovies.tasks.GetMoviesTask;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void loadMovieData() {
-        new FetchMoviesTask(this, selectedSort).execute();
+        new GetMoviesTask(this, selectedSort);
     }
 
     //region AsyncTaskDelegate
@@ -71,12 +72,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onPostExecute(ArrayList<Movie> movies) {
-        if (movies != null) {
-            showMovieGrid();
-            mMovieAdapter.setMovies(movies);
-        } else {
-            showErrorMessage();
-        }
+        showMovieGrid();
+        mMovieAdapter.setMovies(movies);
+    }
+
+    @Override
+    public void onFailure(Boolean cancelled, String message) {
+        showErrorMessage();
     }
     //endregion
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra("Movie", movie);
+        intentToStartDetailActivity.putExtra("Movie", (Serializable)movie);
         startActivity(intentToStartDetailActivity);
     }
     //endregion

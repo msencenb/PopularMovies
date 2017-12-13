@@ -38,7 +38,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         }
 
         public void updateForMovie(Movie movie) {
-            Picasso.with(mImageView.getContext()).load(movie.getPosterUrl()).into(mImageView);
+            Picasso.with(mImageView.getContext()).load(movie.getPosterPath()).into(mImageView);
             //TODO consider adding placeholder and error in with picasso
             /*Picasso.with(mImageView.getContext())
                     .load(movie.getPosterUrl())
