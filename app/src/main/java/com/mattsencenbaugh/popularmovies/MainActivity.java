@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.databinding.DataBindingUtil;
 
+import com.mattsencenbaugh.popularmovies.databinding.ActivityMainBinding;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
 import com.mattsencenbaugh.popularmovies.tasks.GetMoviesTask;
 
@@ -21,13 +20,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
-    private RecyclerView mRecyclerView;
+    ActivityMainBinding mBinding;
+
     private MovieAdapter mMovieAdapter;
-
-    private TextView mApiErrorMessage;
-
-    private ProgressBar mLoadingIndicator;
-
     private int selectedSort = R.id.top_rated;
 
     @Override
@@ -35,17 +30,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_movies);
-        mApiErrorMessage = (TextView) findViewById(R.id.tv_api_error_message);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
-        mRecyclerView.setLayoutManager(layoutManager);
+        mBinding.rvMovies.setLayoutManager(layoutManager);
 
         mMovieAdapter = new MovieAdapter(this);
-        mRecyclerView.setAdapter(mMovieAdapter);
+        mBinding.rvMovies.setAdapter(mMovieAdapter);
 
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         loadMovieData();
     }
 
@@ -95,21 +87,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     //region Show/Hide utilities
     private void showLoadingIndicator() {
-        mApiErrorMessage.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mLoadingIndicator.setVisibility(View.VISIBLE);
+        mBinding.tvApiErrorMessage.setVisibility(View.INVISIBLE);
+        mBinding.rvMovies.setVisibility(View.INVISIBLE);
+        mBinding.pbLoadingIndicator.setVisibility(View.VISIBLE);
     }
 
     private void showMovieGrid() {
-        mApiErrorMessage.setVisibility(View.INVISIBLE);
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        mBinding.tvApiErrorMessage.setVisibility(View.INVISIBLE);
+        mBinding.rvMovies.setVisibility(View.VISIBLE);
+        mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
     }
 
     private void showErrorMessage() {
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
-        mApiErrorMessage.setVisibility(View.VISIBLE);
+        mBinding.tvApiErrorMessage.setVisibility(View.VISIBLE);
+        mBinding.rvMovies.setVisibility(View.INVISIBLE);
+        mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
     }
     //endregion
 
