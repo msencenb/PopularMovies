@@ -2,11 +2,13 @@ package com.mattsencenbaugh.popularmovies;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mattsencenbaugh.popularmovies.databinding.MovieDetailBinding;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -18,33 +20,30 @@ import java.util.Locale;
  */
 
 public class DetailActivity extends AppCompatActivity {
+    MovieDetailBinding mBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
-
-        //TODO consider butterknife https://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife
-        TextView mTitle = (TextView) findViewById(R.id.tv_movie_title);
-        TextView mReleaseDate = (TextView) findViewById(R.id.tv_movie_release_date);
-        TextView mVoteAverage = (TextView) findViewById(R.id.tv_movie_vote_average);
-        TextView mPlot = (TextView) findViewById(R.id.tv_movie_plot);
-        ImageView mPoster = (ImageView) findViewById(R.id.detail_movie_poster);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.movie_detail);
 
         Intent intent = getIntent();
         if (intent.hasExtra("Movie")) {
             Movie movie = (Movie) intent.getSerializableExtra("Movie");
-            mTitle.setText(movie.getTitle());
-            mPlot.setText(movie.getPlot());
+            mBinding.tvMovieTitle.setText(movie.getTitle());
+            mBinding.tvMoviePlot.setText(movie.getPlot());
             Resources res = getResources();
             String movieAverage = res.getString(R.string.average_rating, movie.getVoteAverage());
-            mVoteAverage.setText(movieAverage);
+            mBinding.tvMovieVoteAverage.setText(movieAverage);
 
             Date date = movie.getReleaseDate();
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.US);
             String releaseDate = dateFormat.format(date);
-            mReleaseDate.setText(releaseDate);
+            mBinding.tvMovieReleaseDate.setText(releaseDate);
 
-            Picasso.with(mPoster.getContext()).load(movie.getPosterPath()).into(mPoster);
+            ImageView moviePoster = mBinding.detailMoviePoster;
+            Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
         }
     }
 }

@@ -2,13 +2,14 @@ package com.mattsencenbaugh.popularmovies;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by msencenb on 8/17/17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     private String title;
     @SerializedName("poster_path")
     private String posterPath;
@@ -16,6 +17,7 @@ public class Movie {
     private Double voteAverage;
     @SerializedName("release_date")
     private Date releaseDate;
+    @SerializedName("overview")
     private String plot;
 
     public Movie() {}
