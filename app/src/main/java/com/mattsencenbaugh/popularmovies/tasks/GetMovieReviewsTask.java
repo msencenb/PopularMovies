@@ -3,13 +3,12 @@ package com.mattsencenbaugh.popularmovies.tasks;
 import android.util.Log;
 
 import com.mattsencenbaugh.popularmovies.Movie;
-import com.mattsencenbaugh.popularmovies.R;
-import com.mattsencenbaugh.popularmovies.utilities.Envelope;
-import com.mattsencenbaugh.popularmovies.utilities.ServiceGenerator;
+import com.mattsencenbaugh.popularmovies.Review;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
 import com.mattsencenbaugh.popularmovies.interfaces.TMDBService;
+import com.mattsencenbaugh.popularmovies.utilities.Envelope;
+import com.mattsencenbaugh.popularmovies.utilities.ServiceGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,42 +18,37 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 
 /**
- * Created by msencenb on 12/12/17.
+ * Created by msencenb on 12/18/17.
  */
 
-public class GetMoviesTask implements Callback<Envelope<List<Movie>>> {
+public class GetMovieReviewsTask implements Callback<Envelope<List<Review>>> {
     private final AsyncTaskDelegate mTaskDelegate;
 
-    public GetMoviesTask(AsyncTaskDelegate delegate, int sort) {
+    public GetMovieReviewsTask(AsyncTaskDelegate delegate, Movie movie) {
         this.mTaskDelegate = delegate;
         mTaskDelegate.onPreExecute();
 
         TMDBService service = ServiceGenerator.createService(TMDBService.class);
 
-        if (sort == R.id.top_rated) {
-            Call<Envelope<List<Movie>>> call = service.getTopMovies();
-            call.enqueue(this);
-        } else {
-            Call<Envelope<List<Movie>>> call = service.getPopularMovies();
-            call.enqueue(this);
-        }
+        Call<Envelope<List<Review>>> call = service.getMovieReviews(movie.getId());
+        call.enqueue(this);
     }
 
-
     @Override
-    public void onResponse(Call<Envelope<List<Movie>>> call, Response<Envelope<List<Movie>>> response) {
-        if(response.isSuccessful()) {
-            Envelope<List<Movie>> envelope = response.body();
-            List<Movie> movieList = envelope.getResults();
-            mTaskDelegate.onPostExecute(movieList);
+    public void onResponse(Call<Envelope<List<Review>>> call, Response<Envelope<List<Review>>> response) {
+        if (response.isSuccessful()) {
+            Envelope<List<Review>> envelope = response.body();
+            List<Review> reviewList = envelope.getResults();
+            mTaskDelegate.onPostExecute(reviewList);
         } else {
             System.out.println(response.errorBody());
             mTaskDelegate.onFailure(false,"failed");
         }
     }
 
+    //todo DRY this up, all of these tasks share the same failure code - add a superclass
     @Override
-    public void onFailure(Call<Envelope<List<Movie>>> call, Throwable t) {
+    public void onFailure(Call<Envelope<List<Review>>> call, Throwable t) {
         t.printStackTrace();
         if (call.isCanceled()) {
             Log.e(TAG, "request was cancelled");

@@ -9,14 +9,16 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by msencenb on 8/17/17.
  */
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private ArrayList<Movie> movies;
+    private List<Movie> movies;
 
     final private MovieAdapterOnClickHandler mClickHandler;
 
@@ -78,7 +80,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         return movies.size();
     }
 
-    public void setMovies(ArrayList<Movie> movies) {
+    public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
     }

@@ -10,6 +10,7 @@ import java.util.Date;
  */
 
 public class Movie implements Serializable {
+    private String id;
     private String title;
     @SerializedName("poster_path")
     private String posterPath;
@@ -28,6 +29,10 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
         this.plot = plot;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getPosterPath() {

@@ -18,6 +18,7 @@ import com.mattsencenbaugh.popularmovies.tasks.GetMoviesTask;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
     ActivityMainBinding mBinding;
@@ -63,9 +64,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     @Override
-    public void onPostExecute(ArrayList<Movie> movies) {
+    public void onPostExecute(List<? extends Serializable> results) {
         showMovieGrid();
-        mMovieAdapter.setMovies(movies);
+        // QQQ how do I do a 'checked' cast here? Can't get it working with a List it seems like
+        List<Movie> r = (List<Movie>)results;
+        mMovieAdapter.setMovies(r);
     }
 
     @Override
