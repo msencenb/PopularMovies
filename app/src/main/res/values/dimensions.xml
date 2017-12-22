@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="headline_text_size">27sp</dimen>
+    <dimen name="headline_text_size">23sp</dimen>
     <dimen name="body_text_size">20sp</dimen>
 
     <dimen name="standard_margin">8dp</dimen>

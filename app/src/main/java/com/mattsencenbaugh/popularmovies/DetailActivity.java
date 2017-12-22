@@ -27,13 +27,13 @@ import java.util.Locale;
  * Created by msencenb on 8/24/17.
  */
 
-public class DetailActivity extends AppCompatActivity implements AsyncTaskDelegate {
+public class DetailActivity extends AppCompatActivity {
     static final int NUM_ITEMS = 3;
     MovieFragmentAdapter fragmentAdapter;
     ViewPager viewPager;
+    Movie mMovie;
 
     MovieDetailBinding mBinding;
-    List<Review> mReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,7 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskDelega
             Movie movie = (Movie) intent.getSerializableExtra("Movie");
 
             setupTopViewWithMovie(movie);
-
-            new GetMovieReviewsTask(this, movie);
+            mMovie = movie;
         }
     }
 
@@ -75,28 +74,7 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskDelega
         Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
     }
 
-    @Override
-    public void onPreExecute() {
-        //todo show a spinner in the UI
-    }
-
-    @Override
-    public void onPostExecute(List<? extends Serializable> results) {
-        showReviewGrid();
-        List<Review> r = (List<Review>)results;
-        mReviews = r;
-    }
-
-    @Override
-    public void onFailure(Boolean cancelled, String message) {
-        //todo show error messages;
-    }
-
-    private void showReviewGrid() {
-
-    }
-
-    public static class MovieFragmentAdapter extends FragmentPagerAdapter {
+    public class MovieFragmentAdapter extends FragmentPagerAdapter {
         public MovieFragmentAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -108,8 +86,25 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskDelega
 
         @Override
         public Fragment getItem(int position) {
-            PlotFragment fragment = new PlotFragment();
-            return fragment;
+            Bundle bundle = new Bundle();
+
+            switch (position) {
+                case 0:
+                    bundle.putString("plot", mMovie.getPlot());
+                    PlotFragment pFragment = new PlotFragment();
+                    pFragment.setArguments(bundle);
+                    return pFragment;
+                case 1:
+                    bundle.putSerializable("movie", mMovie);
+                    ReviewFragment rFragment = new ReviewFragment();
+                    rFragment.setArguments(bundle);
+                    return rFragment;
+            }
+
+            bundle.putString("plot", mMovie.getPlot());
+            PlotFragment pFragment = new PlotFragment();
+            pFragment.setArguments(bundle);
+            return pFragment;
         }
 
         @Override

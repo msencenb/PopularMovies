@@ -16,15 +16,15 @@
 
         <ImageView
             android:id="@+id/detail_movie_poster"
-            app:layout_widthPercent="30%"
+            app:layout_widthPercent="20%"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:contentDescription="@string/poster_accessibility"
             />
 
         <LinearLayout
-            app:layout_widthPercent="65%"
-            app:layout_marginStartPercent="35%"
+            app:layout_widthPercent="75%"
+            app:layout_marginStartPercent="25%"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_movie_title"
                 android:textSize="@dimen/headline_text_size"
+                android:textStyle="bold"
                 />
             <TextView
                 android:layout_width="match_parent"
