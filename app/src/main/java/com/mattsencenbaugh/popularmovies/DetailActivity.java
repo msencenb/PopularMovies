@@ -1,12 +1,16 @@
 package com.mattsencenbaugh.popularmovies;
 
+import android.support.design.widget.TabLayout;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mattsencenbaugh.popularmovies.databinding.MovieDetailBinding;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
@@ -24,6 +28,10 @@ import java.util.Locale;
  */
 
 public class DetailActivity extends AppCompatActivity implements AsyncTaskDelegate {
+    static final int NUM_ITEMS = 3;
+    MovieFragmentAdapter fragmentAdapter;
+    ViewPager viewPager;
+
     MovieDetailBinding mBinding;
     List<Review> mReviews;
 
@@ -33,25 +41,38 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskDelega
         setContentView(R.layout.movie_detail);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_detail);
 
+        fragmentAdapter = new MovieFragmentAdapter(getSupportFragmentManager());
+        viewPager = mBinding.pager;
+        viewPager.setAdapter(fragmentAdapter);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = mBinding.slidingTabs;
+        tabLayout.setupWithViewPager(viewPager);
+
+
         Intent intent = getIntent();
         if (intent.hasExtra("Movie")) {
             Movie movie = (Movie) intent.getSerializableExtra("Movie");
-            mBinding.tvMovieTitle.setText(movie.getTitle());
-            mBinding.tvMoviePlot.setText(movie.getPlot());
-            Resources res = getResources();
-            String movieAverage = res.getString(R.string.average_rating, movie.getVoteAverage());
-            mBinding.tvMovieVoteAverage.setText(movieAverage);
 
-            Date date = movie.getReleaseDate();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.US);
-            String releaseDate = dateFormat.format(date);
-            mBinding.tvMovieReleaseDate.setText(releaseDate);
-
-            ImageView moviePoster = mBinding.detailMoviePoster;
-            Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
+            setupTopViewWithMovie(movie);
 
             new GetMovieReviewsTask(this, movie);
         }
+    }
+
+    private void setupTopViewWithMovie(Movie movie) {
+        mBinding.tvMovieTitle.setText(movie.getTitle());
+        Resources res = getResources();
+        String movieAverage = res.getString(R.string.average_rating, movie.getVoteAverage());
+        mBinding.tvMovieVoteAverage.setText(movieAverage);
+
+        Date date = movie.getReleaseDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy", Locale.US);
+        String releaseDate = dateFormat.format(date);
+        mBinding.tvMovieReleaseDate.setText(releaseDate);
+
+        ImageView moviePoster = mBinding.detailMoviePoster;
+        Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
     }
 
     @Override
@@ -73,5 +94,35 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskDelega
 
     private void showReviewGrid() {
 
+    }
+
+    public static class MovieFragmentAdapter extends FragmentPagerAdapter {
+        public MovieFragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            PlotFragment fragment = new PlotFragment();
+            return fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Plot";
+                case 1:
+                    return "Reviews";
+                case 2:
+                    return "Videos";
+            }
+            return "";
+        }
     }
 }
