@@ -3,6 +3,7 @@ package com.mattsencenbaugh.popularmovies.interfaces;
 import com.mattsencenbaugh.popularmovies.BuildConfig;
 import com.mattsencenbaugh.popularmovies.Movie;
 import com.mattsencenbaugh.popularmovies.Review;
+import com.mattsencenbaugh.popularmovies.Video;
 import com.mattsencenbaugh.popularmovies.utilities.Envelope;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface TMDBService {
 
     @GET("3/movie/{movie_id}/reviews")
     Call<Envelope<List<Review>>> getMovieReviews(@Path("movie_id") String movieId);
+
+    @GET("3/movie/{movie_id}/videos")
+    Call<Envelope<List<Video>>> getMovieVideos(@Path("movie_id") String movieId);
 }

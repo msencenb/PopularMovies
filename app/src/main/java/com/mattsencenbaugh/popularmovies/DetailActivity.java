@@ -13,14 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.mattsencenbaugh.popularmovies.databinding.MovieDetailBinding;
-import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
-import com.mattsencenbaugh.popularmovies.tasks.GetMovieReviewsTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -99,12 +95,14 @@ public class DetailActivity extends AppCompatActivity {
                     ReviewFragment rFragment = new ReviewFragment();
                     rFragment.setArguments(bundle);
                     return rFragment;
+                case 2:
+                    bundle.putSerializable("movie", mMovie);
+                    VideoFragment vFragment = new VideoFragment();
+                    vFragment.setArguments(bundle);
+                    return vFragment;
             }
 
-            bundle.putString("plot", mMovie.getPlot());
-            PlotFragment pFragment = new PlotFragment();
-            pFragment.setArguments(bundle);
-            return pFragment;
+            return null;
         }
 
         @Override
