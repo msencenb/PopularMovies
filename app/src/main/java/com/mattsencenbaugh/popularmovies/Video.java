@@ -11,8 +11,17 @@ public class Video implements Serializable {
     private String site;
     private String type;
     private Integer size;
+    private String key;
 
     public Video() {}
+
+    public String getYoutubeLink() {
+        return "https://www.youtube.com/watch?v=" + key;
+    }
+
+    public String getKey() {
+        return key;
+    }
 
     public String getName() {
         return name;

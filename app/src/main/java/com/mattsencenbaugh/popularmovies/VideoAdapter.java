@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -56,17 +58,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView mNameTextView;
         final TextView mSiteTextView;
+        final TextView mTypeTextView;
 
         public VideoAdapterViewHolder(View view) {
             super(view);
             mNameTextView = view.findViewById(R.id.tv_video_name);
             mSiteTextView = view.findViewById(R.id.tv_site);
+            mTypeTextView = view.findViewById(R.id.tv_type);
             view.setOnClickListener(this);
         }
 
         public void updateForVideo(Video video) {
             mNameTextView.setText(video.getName());
             mSiteTextView.setText(video.getSite());
+            mTypeTextView.setText(video.getType());
         }
 
         @Override
