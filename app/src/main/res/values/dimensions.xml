@@ -4,4 +4,5 @@
     <dimen name="body_text_size">20sp</dimen>
 
     <dimen name="standard_margin">8dp</dimen>
+    <dimen name="rv_vertical_margin">16dp</dimen>
 </resources>
