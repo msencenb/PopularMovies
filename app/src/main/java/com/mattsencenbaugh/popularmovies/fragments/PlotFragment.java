@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mattsencenbaugh.popularmovies.R;
 
 import org.w3c.dom.Text;
 

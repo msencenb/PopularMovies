@@ -3,10 +3,8 @@ package com.mattsencenbaugh.popularmovies.interfaces;
 /**
  * Created by msencenb on 8/21/17.
  */
-import com.mattsencenbaugh.popularmovies.Movie;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface AsyncTaskDelegate {

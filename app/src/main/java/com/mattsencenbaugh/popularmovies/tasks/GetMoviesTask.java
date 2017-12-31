@@ -2,14 +2,13 @@ package com.mattsencenbaugh.popularmovies.tasks;
 
 import android.util.Log;
 
-import com.mattsencenbaugh.popularmovies.Movie;
+import com.mattsencenbaugh.popularmovies.models.Movie;
 import com.mattsencenbaugh.popularmovies.R;
 import com.mattsencenbaugh.popularmovies.utilities.Envelope;
 import com.mattsencenbaugh.popularmovies.utilities.ServiceGenerator;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
 import com.mattsencenbaugh.popularmovies.interfaces.TMDBService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

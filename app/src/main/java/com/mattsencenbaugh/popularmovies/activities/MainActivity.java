@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.databinding.DataBindingUtil;
 
+import com.mattsencenbaugh.popularmovies.models.Movie;
+import com.mattsencenbaugh.popularmovies.adapters.MovieAdapter;
+import com.mattsencenbaugh.popularmovies.R;
 import com.mattsencenbaugh.popularmovies.databinding.ActivityMainBinding;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
 import com.mattsencenbaugh.popularmovies.tasks.GetMoviesTask;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {

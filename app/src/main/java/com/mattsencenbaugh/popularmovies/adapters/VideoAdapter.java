@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.mattsencenbaugh.popularmovies.R;
+import com.mattsencenbaugh.popularmovies.models.Video;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     private List<Video> videos;
     final private VideoAdapterOnClickHandler mClickHandler;
 
-    interface VideoAdapterOnClickHandler {
+    public interface VideoAdapterOnClickHandler {
         void onVideoClicked(Video video);
     }
 
-    VideoAdapter(VideoAdapterOnClickHandler clickHandler) {
+    public VideoAdapter(VideoAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 

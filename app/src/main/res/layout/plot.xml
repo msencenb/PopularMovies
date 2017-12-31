@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:layout_width="match_parent" android:layout_height="match_parent">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_movie_plot"
-                style="@style/BodyLabel"
-                android:layout_marginBottom="@dimen/standard_margin"
-                android:layout_marginLeft="@dimen/standard_margin"
-                android:layout_marginStart="@dimen/standard_margin"
-                android:layout_marginTop="@dimen/standard_margin"
-                />
-        </ScrollView>
-    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_movie_plot"
+            style="@style/BodyLabel"
+            android:layout_marginBottom="@dimen/standard_margin"
+            android:layout_marginLeft="@dimen/standard_margin"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
+            />
+    </ScrollView>
 </layout>

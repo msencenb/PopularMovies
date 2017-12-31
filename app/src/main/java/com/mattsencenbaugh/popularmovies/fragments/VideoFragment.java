@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.fragments;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -12,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mattsencenbaugh.popularmovies.models.Movie;
+import com.mattsencenbaugh.popularmovies.R;
+import com.mattsencenbaugh.popularmovies.models.Video;
+import com.mattsencenbaugh.popularmovies.adapters.VideoAdapter;
 import com.mattsencenbaugh.popularmovies.databinding.VideosBinding;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
-import com.mattsencenbaugh.popularmovies.tasks.GetMovieReviewsTask;
 import com.mattsencenbaugh.popularmovies.tasks.GetMovieVideosTask;
 
 import java.io.Serializable;

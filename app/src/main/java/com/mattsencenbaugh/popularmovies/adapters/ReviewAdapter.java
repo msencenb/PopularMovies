@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mattsencenbaugh.popularmovies.R;
+import com.mattsencenbaugh.popularmovies.models.Review;
 
 import java.util.List;
 
@@ -18,11 +21,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     final private ReviewAdapterOnClickHandler mClickHandler;
 
-    interface ReviewAdapterOnClickHandler {
+    public interface ReviewAdapterOnClickHandler {
         void onReviewClicked(Review review);
     }
 
-    ReviewAdapter(ReviewAdapterOnClickHandler clickHandler) {
+    public ReviewAdapter(ReviewAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 

@@ -2,8 +2,8 @@ package com.mattsencenbaugh.popularmovies.tasks;
 
 import android.util.Log;
 
-import com.mattsencenbaugh.popularmovies.Movie;
-import com.mattsencenbaugh.popularmovies.Review;
+import com.mattsencenbaugh.popularmovies.models.Movie;
+import com.mattsencenbaugh.popularmovies.models.Review;
 import com.mattsencenbaugh.popularmovies.interfaces.AsyncTaskDelegate;
 import com.mattsencenbaugh.popularmovies.interfaces.TMDBService;
 import com.mattsencenbaugh.popularmovies.utilities.Envelope;

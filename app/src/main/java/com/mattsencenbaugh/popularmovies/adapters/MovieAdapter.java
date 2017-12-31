@@ -1,4 +1,4 @@
-package com.mattsencenbaugh.popularmovies;
+package com.mattsencenbaugh.popularmovies.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,39 +7,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.mattsencenbaugh.popularmovies.models.Movie;
+import com.mattsencenbaugh.popularmovies.R;
 import com.squareup.picasso.Picasso;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by msencenb on 8/17/17.
  */
 
-class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private List<Movie> movies;
 
     final private MovieAdapterOnClickHandler mClickHandler;
 
-    interface MovieAdapterOnClickHandler {
+    public interface MovieAdapterOnClickHandler {
         void onMovieClicked(Movie movie);
     }
 
-    MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
     }
 
-    class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView mImageView;
 
-        public MovieAdapterViewHolder(View view) {
+        MovieAdapterViewHolder(View view) {
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.iv_movie_poster);
             view.setOnClickListener(this);
         }
 
-        public void updateForMovie(Movie movie) {
+        void updateForMovie(Movie movie) {
             Picasso.with(mImageView.getContext()).load(movie.getPosterPath()).into(mImageView);
             //TODO consider adding placeholder and error in with picasso
             /*Picasso.with(mImageView.getContext())
