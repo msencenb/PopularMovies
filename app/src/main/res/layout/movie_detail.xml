@@ -40,6 +40,12 @@
                 style="@style/BodyLabel"
                 android:id="@+id/tv_movie_vote_average"
                 />
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_favorite_movie"
+                />
         </LinearLayout>
     </android.support.percent.PercentRelativeLayout >
 

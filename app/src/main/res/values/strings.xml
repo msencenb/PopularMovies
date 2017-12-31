@@ -1,9 +1,13 @@
 <resources>
+    <string name="content_authority">com.mattsencenbaugh.popularmovies</string>
     <string name="app_name">PopularMovies</string>
     <string name="api_error_message">Failed loading movies, please try again later.</string>
     <string name="sort_menu">Sort</string>
+    <string name="favorites">Favorites</string>
     <string name="top_rated">Top Rated</string>
     <string name="popular">Popular</string>
     <string name="average_rating">%1$.1f Average Rating</string>
     <string name="poster_accessibility">Movie Poster Image</string>
+    <string name="favorite_movie">Favorited!</string>
+    <string name="not_favorite_movie">Not a favorite</string>
 </resources>

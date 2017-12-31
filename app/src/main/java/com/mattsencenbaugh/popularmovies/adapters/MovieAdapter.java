@@ -1,6 +1,7 @@
 package com.mattsencenbaugh.popularmovies.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,11 @@ import java.util.List;
  */
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+    // This adapter is either driven by a list of movies (retrieved by the api)
+    // or by a database cursor
     private List<Movie> movies;
+    private Cursor mCursor;
+    private final Context mContext;
 
     final private MovieAdapterOnClickHandler mClickHandler;
 
@@ -25,8 +30,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onMovieClicked(Movie movie);
     }
 
-    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler, Context context) {
         mClickHandler = clickHandler;
+        mContext = context;
     }
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -40,6 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         void updateForMovie(Movie movie) {
             Picasso.with(mImageView.getContext()).load(movie.getPosterPath()).into(mImageView);
+
             //TODO consider adding placeholder and error in with picasso
             /*Picasso.with(mImageView.getContext())
                     .load(movie.getPosterUrl())
@@ -68,19 +75,38 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        Movie movie = movies.get(position);
+        Movie movie;
+        if (movies != null) {
+            movie = movies.get(position);
+        } else {
+            mCursor.moveToPosition(position);
+            movie = new Movie(mCursor);
+        }
         holder.updateForMovie(movie);
     }
 
     @Override
     public int getItemCount() {
-        if (movies == null) return 0;
+        if (movies == null && mCursor == null) return 0;
 
-        return movies.size();
+        if (movies != null) {
+            return movies.size();
+        } else {
+            return mCursor.getCount();
+        }
     }
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
+        this.mCursor = null;
+        notifyDataSetChanged();
+    }
+
+    public void setCursor(Cursor newCursor) {
+        if (newCursor != null) {
+            this.mCursor = newCursor;
+            this.movies = null;
+        }
         notifyDataSetChanged();
     }
 }

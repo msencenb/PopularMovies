@@ -1,7 +1,12 @@
 package com.mattsencenbaugh.popularmovies.activities;
 
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.databinding.DataBindingUtil;
 
+import com.mattsencenbaugh.popularmovies.data.MovieContract;
+import com.mattsencenbaugh.popularmovies.data.MovieDbHelper;
 import com.mattsencenbaugh.popularmovies.models.Movie;
 import com.mattsencenbaugh.popularmovies.adapters.MovieAdapter;
 import com.mattsencenbaugh.popularmovies.R;
@@ -22,11 +29,16 @@ import com.mattsencenbaugh.popularmovies.tasks.GetMoviesTask;
 import java.io.Serializable;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, AsyncTaskDelegate {
+public class MainActivity extends AppCompatActivity implements
+        MovieAdapter.MovieAdapterOnClickHandler,
+        AsyncTaskDelegate,
+        LoaderManager.LoaderCallbacks<Cursor> {
+
     ActivityMainBinding mBinding;
 
     private MovieAdapter mMovieAdapter;
     private int selectedSort = R.id.top_rated;
+    public static final int ID_MOVIE_LOADER = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
         mBinding.rvMovies.setLayoutManager(layoutManager);
 
-        mMovieAdapter = new MovieAdapter(this);
+        mMovieAdapter = new MovieAdapter(this, this);
         mBinding.rvMovies.setAdapter(mMovieAdapter);
 
         loadMovieData();
@@ -125,14 +137,52 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        item.setChecked(!item.isChecked());
+
         if (id == R.id.top_rated || id == R.id.popular) {
-            item.setChecked(!item.isChecked());
             selectedSort = id;
             loadMovieData();
+            return true;
+        } else if (id == R.id.favorites) {
+            selectedSort = id;
+            getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, null, this);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        showLoadingIndicator();
+        switch (id) {
+            case ID_MOVIE_LOADER:
+                Uri favoriteMovieQueryUri = MovieContract.MovieEntry.FAVORITE_URI;
+                String sortOrder = MovieContract.MovieEntry.COLUMN_TITLE + " DESC";
+
+                return new CursorLoader(this,
+                        favoriteMovieQueryUri,
+                        MovieDbHelper.ALL_MOVIE_PROJECTIONS,
+                        null,
+                        null,
+                        sortOrder
+                );
+
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mMovieAdapter.setCursor(cursor);
+        showMovieGrid();
+        // TODO smooth scroll back to the top
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mMovieAdapter.setCursor(null);
     }
     //endregion
 }

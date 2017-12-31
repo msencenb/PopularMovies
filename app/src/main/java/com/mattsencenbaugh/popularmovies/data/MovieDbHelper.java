@@ -12,6 +12,23 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "popular_movies.db";
     public static final int DATABASE_VERSION = 1;
 
+    public static final String[] ALL_MOVIE_PROJECTIONS = {
+            MovieContract.MovieEntry.COLUMN_TMDB_ID,
+            MovieContract.MovieEntry.COLUMN_TITLE,
+            MovieContract.MovieEntry.COLUMN_POSTER_PATH,
+            MovieContract.MovieEntry.COLUMN_AVERAGE_VOTE,
+            MovieContract.MovieEntry.COLUMN_RELEASE_DATE,
+            MovieContract.MovieEntry.COLUMN_PLOT
+    };
+
+    // The indexes representing the projection above
+    public static final int INDEX_TMDB_ID = 0;
+    public static final int INDEX_TITLE = 1;
+    public static final int INDEX_POSTER_PATH = 2;
+    public static final int INDEX_AVERAGE_VOTE = 3;
+    public static final int INDEX_RELEASE_DATE = 4;
+    public static final int INDEX_PLOT = 5;
+
     public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

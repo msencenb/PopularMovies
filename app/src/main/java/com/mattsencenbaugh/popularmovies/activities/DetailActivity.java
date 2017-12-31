@@ -1,5 +1,6 @@
 package com.mattsencenbaugh.popularmovies.activities;
 
+import android.content.ContentValues;
 import android.support.design.widget.TabLayout;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -10,8 +11,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import com.mattsencenbaugh.popularmovies.data.MovieContract;
 import com.mattsencenbaugh.popularmovies.models.Movie;
 import com.mattsencenbaugh.popularmovies.fragments.PlotFragment;
 import com.mattsencenbaugh.popularmovies.R;
@@ -28,7 +32,7 @@ import java.util.Locale;
  * Created by msencenb on 8/24/17.
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     static final int NUM_ITEMS = 3;
     MovieFragmentAdapter fragmentAdapter;
     ViewPager viewPager;
@@ -45,6 +49,9 @@ public class DetailActivity extends AppCompatActivity {
         fragmentAdapter = new MovieFragmentAdapter(getSupportFragmentManager());
         viewPager = mBinding.pager;
         viewPager.setAdapter(fragmentAdapter);
+
+        Button button = mBinding.btnFavorite;
+        button.setOnClickListener(this);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = mBinding.slidingTabs;
@@ -73,6 +80,18 @@ public class DetailActivity extends AppCompatActivity {
 
         ImageView moviePoster = mBinding.detailMoviePoster;
         Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
+    }
+
+    @Override
+    public void onClick(View view) {
+        // Code here executes on main thread after user presses button
+        // TODO I need to determine whether a movie is currently a favorite or not
+        // then trigger either an insert or a delete here.
+        ContentValues movieValues = mMovie.getContentValues();
+        this.getContentResolver().insert(
+                MovieContract.MovieEntry.CONTENT_URI,
+                movieValues
+        );
     }
 
     public class MovieFragmentAdapter extends FragmentPagerAdapter {

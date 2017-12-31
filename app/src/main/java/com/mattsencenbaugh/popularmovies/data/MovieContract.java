@@ -11,12 +11,17 @@ import android.provider.BaseColumns;
 public class MovieContract {
     public static final String CONTENT_AUTHORITY = "com.mattsencenbaugh.popularmovies";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    public static final String PATH_FAVORITE_MOVIES = "movies/favorites";
+    public static final String PATH_FAVORITES = "favorites";
     public static final String PATH_MOVIE = "movies";
 
     public static final class MovieEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_MOVIE)
+                .build();
+
+        public static final Uri FAVORITE_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_MOVIE)
+                .appendPath(PATH_FAVORITES)
                 .build();
 
         public static Uri buildMovieUriWithId(long id) {
