@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private MovieAdapter mMovieAdapter;
     private int selectedSort = R.id.top_rated;
-    public static final int ID_MOVIE_LOADER = 42;
+    public static final int ID_MOVIES_LOADER = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         } else if (id == R.id.favorites) {
             selectedSort = id;
-            getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, null, this);
+            getSupportLoaderManager().initLoader(ID_MOVIES_LOADER, null, this);
             return true;
         }
 
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         showLoadingIndicator();
         switch (id) {
-            case ID_MOVIE_LOADER:
+            case ID_MOVIES_LOADER:
                 Uri favoriteMovieQueryUri = MovieContract.MovieEntry.FAVORITE_URI;
                 String sortOrder = MovieContract.MovieEntry.COLUMN_TITLE + " DESC";
 

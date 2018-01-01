@@ -58,9 +58,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View view) {
             int index = getAdapterPosition();
-            Movie movie = movies.get(index);
+            Movie movie = getMovieAtPosition(index);
             mClickHandler.onMovieClicked(movie);
         }
+    }
+
+    private Movie getMovieAtPosition(int position) {
+        Movie movie;
+        if (movies != null) {
+            movie = movies.get(position);
+        } else {
+            mCursor.moveToPosition(position);
+            movie = new Movie(mCursor);
+        }
+        return movie;
     }
 
     @Override
@@ -75,13 +86,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        Movie movie;
-        if (movies != null) {
-            movie = movies.get(position);
-        } else {
-            mCursor.moveToPosition(position);
-            movie = new Movie(mCursor);
-        }
+        Movie movie = getMovieAtPosition(position);
         holder.updateForMovie(movie);
     }
 

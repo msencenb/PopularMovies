@@ -59,6 +59,20 @@ public class MovieProvider extends ContentProvider {
                 );
                 break;
             }
+            case CODE_MOVIE_WITH_ID: {
+                String tmdbId = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{tmdbId};
+                cursor = mOpenHelper.getReadableDatabase().query(
+                        MovieContract.MovieEntry.TABLE_NAME,
+                        projection,
+                        MovieContract.MovieEntry.COLUMN_TMDB_ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -110,7 +124,7 @@ public class MovieProvider extends ContentProvider {
                 String movieId = uri.getLastPathSegment();
                 numRowsDeleted = mOpenHelper.getWritableDatabase().delete(
                         MovieContract.MovieEntry.TABLE_NAME,
-                        MovieContract.MovieEntry._ID  + "=" + movieId,
+                        MovieContract.MovieEntry.COLUMN_TMDB_ID  + "=" + movieId,
                         null
                 );
                 break;

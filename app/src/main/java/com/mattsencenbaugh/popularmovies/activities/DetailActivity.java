@@ -1,6 +1,8 @@
 package com.mattsencenbaugh.popularmovies.activities;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,6 +11,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mattsencenbaugh.popularmovies.data.MovieContract;
+import com.mattsencenbaugh.popularmovies.data.MovieDbHelper;
 import com.mattsencenbaugh.popularmovies.models.Movie;
 import com.mattsencenbaugh.popularmovies.fragments.PlotFragment;
 import com.mattsencenbaugh.popularmovies.R;
@@ -32,11 +38,18 @@ import java.util.Locale;
  * Created by msencenb on 8/24/17.
  */
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivity extends AppCompatActivity implements
+        View.OnClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
+
+    static final int ID_MOVIE_LOADER = 43;
     static final int NUM_ITEMS = 3;
     MovieFragmentAdapter fragmentAdapter;
     ViewPager viewPager;
     Movie mMovie;
+    // TODO this is not really ideal since I have to hit the db individually.
+    // favorite should probably be on the Movie model with a custom callback
+    Boolean isFavorite;
 
     MovieDetailBinding mBinding;
 
@@ -64,6 +77,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             setupTopViewWithMovie(movie);
             mMovie = movie;
+
+            getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, null, this);
         }
     }
 
@@ -87,11 +102,69 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         // Code here executes on main thread after user presses button
         // TODO I need to determine whether a movie is currently a favorite or not
         // then trigger either an insert or a delete here.
-        ContentValues movieValues = mMovie.getContentValues();
-        this.getContentResolver().insert(
-                MovieContract.MovieEntry.CONTENT_URI,
-                movieValues
-        );
+        if (isFavorite) {
+            // delete it
+            Uri deleteUri = MovieContract.MovieEntry.buildMovieUriWithId(Long.parseLong(mMovie.getId()));
+            int rowsDeleted = this.getContentResolver().delete(deleteUri, null, null);
+            if (rowsDeleted == 1) {
+                isFavorite = false;
+                updateFavoriteButton();
+            }
+        } else {
+            ContentValues movieValues = mMovie.getContentValues();
+            this.getContentResolver().insert(
+                    MovieContract.MovieEntry.CONTENT_URI,
+                    movieValues
+            );
+            // TODO the insert only returns a uri, not an inserted count. Does this mean I should query to make sure it's inserted?
+            isFavorite = true;
+            updateFavoriteButton();
+        }
+    }
+
+    // TODO make this an image based button instead of a text based one
+    private void updateFavoriteButton(){
+        Button button = mBinding.btnFavorite;
+        if (isFavorite) {
+            button.setText("Favorited");
+        } else {
+            button.setText("Not favorite");
+        }
+        button.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case ID_MOVIE_LOADER:
+                Uri isFavoriteUri = MovieContract.MovieEntry.buildMovieUriWithId(Long.parseLong(mMovie.getId()));
+                return new CursorLoader(this,
+                        isFavoriteUri,
+                        MovieDbHelper.ALL_MOVIE_PROJECTIONS,
+                        null,
+                        null,
+                        null
+                );
+
+            default:
+                throw new RuntimeException("Loader not implemented " + id);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor.getCount() == 1) {
+            isFavorite = true;
+        } else {
+            isFavorite = false;
+        }
+        updateFavoriteButton();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        Button button = mBinding.btnFavorite;
+        button.setVisibility(View.INVISIBLE);
     }
 
     public class MovieFragmentAdapter extends FragmentPagerAdapter {
