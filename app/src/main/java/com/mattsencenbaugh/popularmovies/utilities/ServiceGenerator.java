@@ -18,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by msencenb on 12/13/17.
+ * This code is based on code found in this book: https://leanpub.com/retrofit-love-working-with-apis-on-android
+ * modified for my own purposes
  */
 
 public class ServiceGenerator {
