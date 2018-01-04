@@ -60,7 +60,7 @@ public class ReviewFragment extends Fragment implements AsyncTaskDelegate, Revie
         mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
         List<Review> r = (List<Review>)results;
         mReviewAdapter.setReviews(r);
-        //todo do something for an empty set
+        //todo show something for an empty set
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,8 +50,7 @@ public class DetailActivity extends AppCompatActivity implements
     MovieFragmentAdapter fragmentAdapter;
     ViewPager viewPager;
     Movie mMovie;
-    // TODO this is not really ideal since I have to hit the db individually.
-    // favorite should probably be on the Movie model with a custom callback
+    // TODO this is not really ideal since I have to hit the db individually. Favorite should probably be on the Movie model with a custom callback
     Boolean isFavorite;
 
     MovieDetailBinding mBinding;
@@ -67,7 +67,7 @@ public class DetailActivity extends AppCompatActivity implements
         viewPager = mBinding.pager;
         viewPager.setAdapter(fragmentAdapter);
 
-        Button button = mBinding.btnFavorite;
+        AppCompatImageButton button = mBinding.btnFavorite;
         button.setOnClickListener(this);
 
         // Give the TabLayout the ViewPager
@@ -113,9 +113,6 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-        // Code here executes on main thread after user presses button
-        // TODO I need to determine whether a movie is currently a favorite or not
-        // then trigger either an insert or a delete here.
         if (isFavorite) {
             // delete it
             Uri deleteUri = MovieContract.MovieEntry.buildMovieUriWithId(Long.parseLong(mMovie.getId()));
@@ -130,19 +127,18 @@ public class DetailActivity extends AppCompatActivity implements
                     MovieContract.MovieEntry.CONTENT_URI,
                     movieValues
             );
-            // TODO the insert only returns a uri, not an inserted count. Does this mean I should query to make sure it's inserted?
+            // TODO the insert only returns a uri, not an inserted count. I should probably query to make sure it's inserted?
             isFavorite = true;
             updateFavoriteButton();
         }
     }
 
-    // TODO make this an image based button instead of a text based one
     private void updateFavoriteButton(){
-        Button button = mBinding.btnFavorite;
+        AppCompatImageButton button = mBinding.btnFavorite;
         if (isFavorite) {
-            button.setText("Favorited");
+            button.setImageResource(android.R.drawable.btn_star_big_on);
         } else {
-            button.setText("Not favorite");
+            button.setImageResource(android.R.drawable.btn_star_big_off);
         }
         button.setVisibility(View.VISIBLE);
     }
@@ -177,7 +173,7 @@ public class DetailActivity extends AppCompatActivity implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        Button button = mBinding.btnFavorite;
+        AppCompatImageButton button = mBinding.btnFavorite;
         button.setVisibility(View.INVISIBLE);
     }
 

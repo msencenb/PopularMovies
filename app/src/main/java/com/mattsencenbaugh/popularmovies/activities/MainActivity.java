@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements
     private static final String SELECTED_SORT_KEY = "selected_sort";
     private int selectedSort = R.id.top_rated;
     public static final int ID_MOVIES_LOADER = 42;
+    private Loader<Cursor> mLoader = null;
 
-    // TODO in savedInstanceState save the sort order
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,11 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             selectedSort = R.id.top_rated;
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadMovieData();
     }
 
@@ -86,7 +90,11 @@ public class MainActivity extends AppCompatActivity implements
         if (selectedSort != R.id.favorites) {
             new GetMoviesTask(this, selectedSort);
         } else {
-            getSupportLoaderManager().initLoader(ID_MOVIES_LOADER, null, this);
+            if (mLoader != null) {
+                mLoader = getSupportLoaderManager().restartLoader(ID_MOVIES_LOADER, null, this);
+            } else {
+                mLoader = getSupportLoaderManager().initLoader(ID_MOVIES_LOADER, null, this);
+            }
         }
     }
 
@@ -98,10 +106,10 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPostExecute(List<? extends Serializable> results) {
-        showMovieGrid();
-        // QQQ how do I do a 'checked' cast here? Can't get it working with a List it seems like
+        // todo how do I do a 'checked' cast here? Can't get it working with a List
         List<Movie> r = (List<Movie>)results;
         mMovieAdapter.setMovies(r);
+        showMovieGrid();
     }
 
     @Override
@@ -132,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.tvApiErrorMessage.setVisibility(View.INVISIBLE);
         mBinding.rvMovies.setVisibility(View.VISIBLE);
         mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
+        mBinding.rvMovies.smoothScrollToPosition(0);
     }
 
     private void showErrorMessage() {
@@ -191,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mMovieAdapter.setCursor(cursor);
         showMovieGrid();
-        // TODO smooth scroll back to the top
     }
 
     @Override
