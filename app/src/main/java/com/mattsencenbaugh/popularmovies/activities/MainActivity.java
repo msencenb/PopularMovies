@@ -1,5 +1,6 @@
 package com.mattsencenbaugh.popularmovies.activities;
 
+import android.os.PersistableBundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -37,9 +38,11 @@ public class MainActivity extends AppCompatActivity implements
     ActivityMainBinding mBinding;
 
     private MovieAdapter mMovieAdapter;
+    private static final String SELECTED_SORT_KEY = "selected_sort";
     private int selectedSort = R.id.top_rated;
     public static final int ID_MOVIES_LOADER = 42;
 
+    // TODO in savedInstanceState save the sort order
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,19 @@ public class MainActivity extends AppCompatActivity implements
         mMovieAdapter = new MovieAdapter(this, this);
         mBinding.rvMovies.setAdapter(mMovieAdapter);
 
+        if (savedInstanceState != null) {
+            selectedSort = savedInstanceState.getInt(SELECTED_SORT_KEY);
+        } else {
+            selectedSort = R.id.top_rated;
+        }
+
         loadMovieData();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SELECTED_SORT_KEY, selectedSort);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private int numberOfColumns() {
@@ -68,7 +83,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void loadMovieData() {
-        new GetMoviesTask(this, selectedSort);
+        if (selectedSort != R.id.favorites) {
+            new GetMoviesTask(this, selectedSort);
+        } else {
+            getSupportLoaderManager().initLoader(ID_MOVIES_LOADER, null, this);
+        }
     }
 
     //region AsyncTaskDelegate
@@ -138,17 +157,12 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         item.setChecked(!item.isChecked());
+        selectedSort = id;
 
-        if (id == R.id.top_rated || id == R.id.popular) {
-            selectedSort = id;
+        if (id == R.id.top_rated || id == R.id.popular || id == R.id.favorites) {
             loadMovieData();
             return true;
-        } else if (id == R.id.favorites) {
-            selectedSort = id;
-            getSupportLoaderManager().initLoader(ID_MOVIES_LOADER, null, this);
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

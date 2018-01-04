@@ -12,10 +12,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,6 +58,8 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.movie_detail);
         mBinding = DataBindingUtil.setContentView(this, R.layout.movie_detail);
 
@@ -69,7 +73,6 @@ public class DetailActivity extends AppCompatActivity implements
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = mBinding.slidingTabs;
         tabLayout.setupWithViewPager(viewPager);
-
 
         Intent intent = getIntent();
         if (intent.hasExtra("Movie")) {
@@ -95,6 +98,17 @@ public class DetailActivity extends AppCompatActivity implements
 
         ImageView moviePoster = mBinding.detailMoviePoster;
         Picasso.with(moviePoster.getContext()).load(movie.getPosterPath()).into(moviePoster);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
