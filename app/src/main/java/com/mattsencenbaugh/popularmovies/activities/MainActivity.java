@@ -1,5 +1,6 @@
 package com.mattsencenbaugh.popularmovies.activities;
 
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -39,9 +40,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private MovieAdapter mMovieAdapter;
     private static final String SELECTED_SORT_KEY = "selected_sort";
+    public static final String LAYOUT_STATE = "lm_state";
     private int selectedSort = R.id.top_rated;
     public static final int ID_MOVIES_LOADER = 42;
     private Loader<Cursor> mLoader = null;
+    private Parcelable mPendingLayoutState = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (savedInstanceState != null) {
             selectedSort = savedInstanceState.getInt(SELECTED_SORT_KEY);
+            mPendingLayoutState = savedInstanceState.getParcelable(LAYOUT_STATE);
         } else {
             selectedSort = R.id.top_rated;
         }
@@ -72,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(SELECTED_SORT_KEY, selectedSort);
+        Parcelable layoutState = mBinding.rvMovies.getLayoutManager().onSaveInstanceState();
+        savedInstanceState.putParcelable(LAYOUT_STATE, layoutState);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -140,7 +146,12 @@ public class MainActivity extends AppCompatActivity implements
         mBinding.tvApiErrorMessage.setVisibility(View.INVISIBLE);
         mBinding.rvMovies.setVisibility(View.VISIBLE);
         mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
-        mBinding.rvMovies.smoothScrollToPosition(0);
+        if (mPendingLayoutState != null) {
+            mBinding.rvMovies.getLayoutManager().onRestoreInstanceState(mPendingLayoutState);
+            mPendingLayoutState = null;
+        } else {
+            mBinding.rvMovies.smoothScrollToPosition(0);
+        }
     }
 
     private void showErrorMessage() {
