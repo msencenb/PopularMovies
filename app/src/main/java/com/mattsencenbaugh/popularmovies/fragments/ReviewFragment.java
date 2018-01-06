@@ -2,6 +2,7 @@ package com.mattsencenbaugh.popularmovies.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,8 @@ public class ReviewFragment extends Fragment implements AsyncTaskDelegate, Revie
     Movie mMovie;
 
     private ReviewAdapter mReviewAdapter;
+    public static final String REVIEW_LAYOUT_STATE = "review_lm_state";
+    private Parcelable mPendingLayoutState = null;
 
     @Nullable
     @Override
@@ -47,7 +50,17 @@ public class ReviewFragment extends Fragment implements AsyncTaskDelegate, Revie
         // Or should the activity itself pass in a list of reviews rather than the movie?
         new GetMovieReviewsTask(this, mMovie);
 
+        if (savedInstanceState != null) {
+            mPendingLayoutState = savedInstanceState.getParcelable(REVIEW_LAYOUT_STATE);
+        }
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Parcelable layoutState = mBinding.rvReviews.getLayoutManager().onSaveInstanceState();
+        savedInstanceState.putParcelable(REVIEW_LAYOUT_STATE, layoutState);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -60,6 +73,10 @@ public class ReviewFragment extends Fragment implements AsyncTaskDelegate, Revie
         mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
         List<Review> r = (List<Review>)results;
         mReviewAdapter.setReviews(r);
+        if (mPendingLayoutState != null) {
+            mBinding.rvReviews.getLayoutManager().onRestoreInstanceState(mPendingLayoutState);
+            mPendingLayoutState = null;
+        }
         //todo show something for an empty set
     }
 

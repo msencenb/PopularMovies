@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,8 @@ public class VideoFragment extends Fragment implements AsyncTaskDelegate, VideoA
     Movie mMovie;
 
     private VideoAdapter mVideoAdapter;
+    public static final String VIDEO_LAYOUT_STATE = "video_lm_state";
+    private Parcelable mPendingLayoutState = null;
 
     @Nullable
     @Override
@@ -47,8 +50,17 @@ public class VideoFragment extends Fragment implements AsyncTaskDelegate, VideoA
         mBinding.rvVideos.setAdapter(mVideoAdapter);
 
         new GetMovieVideosTask(this, mMovie);
-
+        if (savedInstanceState != null) {
+            mPendingLayoutState = savedInstanceState.getParcelable(VIDEO_LAYOUT_STATE);
+        }
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Parcelable layoutState = mBinding.rvVideos.getLayoutManager().onSaveInstanceState();
+        savedInstanceState.putParcelable(VIDEO_LAYOUT_STATE, layoutState);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -61,6 +73,10 @@ public class VideoFragment extends Fragment implements AsyncTaskDelegate, VideoA
         mBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
         List<Video> v = (List<Video>)results;
         mVideoAdapter.setVideos(v);
+        if (mPendingLayoutState != null) {
+            mBinding.rvVideos.getLayoutManager().onRestoreInstanceState(mPendingLayoutState);
+            mPendingLayoutState = null;
+        }
     }
 
     @Override
